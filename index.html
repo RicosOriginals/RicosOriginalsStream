@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ricos Originals</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+      background: linear-gradient(to right, #ffffff, #00A1FF, #002AFF);
+      color: #00A1FF;
+      margin: 0;
+      padding: 0;
+    }
+    .container { padding: 20px; }
+    .card {
+      background-color: rgba(255,255,255,0.05);
+      padding: 20px;
+      margin: 10px 0;
+      border-radius: 15px;
+      cursor: pointer;
+      background-size: cover;
+      background-position: center;
+      height: 200px;
+      display: flex;
+      align-items: flex-end;
+      color: white;
+      font-size: 24px;
+      transition: transform .3s ease;
+    }
+  .desktop-mode .card {
+  aspect-ratio: 16/9;
+  max-width: 400px;   /* oder 300px je nach Geschmack */
+  margin: 10px auto;
+}
+
+    .card:hover { transform: scale(1.02); }
+    .hidden { display: none; }
+    iframe { max-width: 100%; }
+    img {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 10px;
+    }
+    .page { padding: 20px; }
+    .back-button {
+      margin-top: 10px;
+      padding: 10px 15px;
+      background:#00A1FF ;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    h1, h2, h3 { color: #00bfff; }
+    #introAnimation {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #E8F7FF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+      color: #00bfff;
+      z-index: 1000;
+      animation: fadeOut 1s ease 2s forwards; 
+    }
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+    .mode-selector {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #E8F7FF;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
+    }
+    .mode-selector h2 {
+      color: #00A1FF;
+      margin-bottom: 20px;
+    }
+    .mode-selector button {
+      margin: 10px;
+      padding: 15px 30px;
+      font-size: 18px;
+      background: #00A1FF;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .mode-selector button:hover {
+      background: #007acc;
+    }
+  .search-container {
+  padding: 20px;
+  text-align: center;
+}
+
+#searchInput {
+  padding: 10px;
+  width: 80%;
+  max-width: 400px;
+  border: 2px solid #00A1FF;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+ #startAnimation {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #051a2d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeOutMoveUp 2s ease 2s forwards;
+}
+#startAnimation img {
+  width: 300px;
+  animation: zoomIn 1.5s ease;
+}
+@keyframes zoomIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes fadeOutMoveUp {
+  to {
+    opacity: 0;
+    transform: translateY(-100px);
+    visibility: hidden;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+<!-- Update Screen -->
+<div id="updateScreen" style="display:none;">
+  <div class="update-inner">
+    <h1>🎮 Ricos Originals</h1>
+    <h2>Version 4.0 ist verfügbar</h2>
+    <button id="startUpdate">Aktualisieren</button>
+    <p id="loadingText" style="display:none;">Version 4.0 wird installiert<span id="dots">.</span></p>
+  </div>
+</div>
+
+<style>
+  #updateScreen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: white;
+    color: white;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+  }
+  .update-inner {
+    text-align: center;
+  }
+  .update-inner h1 {
+    font-size: 48px;
+    color: #00bfff;
+  }
+  .update-inner h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  .update-inner button {
+    background: #00bfff;
+    border: none;
+    color: white;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .update-inner button:hover {
+    background: #007acc;
+  }
+</style>
+
+<div id="accountOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;">
+  <h2>Willkommen bei Ricos Originals+</h2>
+  <p>Wie heißt du?</p>
+  <input type="text" id="usernameInput" placeholder="Dein Name" style="padding:10px;border:none;border-radius:5px;margin-bottom:10px;">
+  <button onclick="saveUsername()" style="padding:10px 20px;border:none;border-radius:5px;background:#001bff;color:white;cursor:pointer;">Weiter</button>
+</div>
+
+<audio id="clickSound" src="https://i.imgur.com/jmaYNfJ.mp4" preload="auto"></audio>
+
+<div id="startAnimation">
+  <img src="https://i.imgur.com/gByvlR8.jpeg" alt="Ricos Originals+" />
+</div>
+
+<!-- Gerätewahl -->
+<div id="deviceSelect" class="mode-selector">
+  <h2>Wähle dein Gerät</h2>
+  <button onclick="setDeviceMode('mobile')">Handy</button>
+  <button onclick="setDeviceMode('desktop')">PC / TV</button>
+</div>
+
+<!-- Intro Animation -->
+<div id="introAnimation" style="display:none;">Ricos Originals +</div>
+
+<script>
+    
+    function setDeviceMode(mode) {
+    document.getElementById('deviceSelect').style.display = 'none';
+    document.getElementById('introAnimation').style.display = 'flex';
+    setTimeout(() => {
+      document.getElementById('introAnimation').style.display = 'none';
+      showUpdateOrHome();
+    }, 2500);
+    if (mode === 'desktop') {
+      document.body.classList.add('desktop-mode');
+    }
+  }
+
+  function showUpdateOrHome() {
+    if (!localStorage.getItem('updateSeen')) {
+      document.getElementById('updateScreen').style.display = 'flex';
+      document.getElementById('startUpdate').addEventListener('click', () => {
+        document.getElementById('startUpdate').style.display = 'none';
+        document.getElementById('loadingText').style.display = 'block';
+        let dots = document.getElementById('dots');
+        let dotCount = 1;
+        let dotInterval = setInterval(() => {
+          dotCount = (dotCount % 3) + 1;
+          dots.textContent = '.'.repeat(dotCount);
+        }, 500);
+        setTimeout(() => {
+          clearInterval(dotInterval);
+          document.getElementById('updateScreen').style.display = 'none';
+          localStorage.setItem('updateSeen', 'true');
+          openPage('home');
+        }, 8000);
+      });
+    } else {
+      openPage('home');
+    }
+  }
+
+  function openPage(id) {
+    document.querySelectorAll('.page, #home')
+            .forEach(p => p.classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
+  }
+
+function searchContent() {
+  const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+  const tiles = document.querySelectorAll(".card");
+
+  tiles.forEach(tile => {
+    const text = tile.innerText.toLowerCase();
+    const match = text.includes(searchTerm);
+
+    // Wenn es passt, zeige Seite mit der Kachel
+    if (match) {
+      let parent = tile.closest(".page");
+      if (parent && parent.classList.contains("hidden")) {
+        document.querySelectorAll('.page').forEach(p => p.classList.add("hidden"));
+        parent.classList.remove("hidden");
+      }
+    }
+
+    // Sichtbarkeit der Kachel steuern
+    tile.style.display = match || searchTerm === "" ? "flex" : "none";
+  });
+}
+
+</script>
+
+<!-- AB HIER FOLGT DEIN GANZER INHALT (z.B. <div class="container">...) UNVERÄNDERT -->
+<div id="introAnimation">Ricos Originals +</div>
+
+  <div class="container">
+    <h1>Ricos Originals</h1>
+
+<h2 id="welcomeMessage" style="margin-top:10px;"></h2>
+
+   <div class="search-container">
+  <input type="text" id="searchInput" oninput="searchContent()" placeholder="🔍 Suche nach Serien oder Filmen..." />
+</div>
+
+    <!-- Startseite: Serienkarten -->
+   <div id="home" class="hidden">
+      <div class="card" onclick="openPage('RCU')" style="background-image:url('https://i.imgur.com/TkS5et2.png');">
+        <div></div>
+      </div>
+   
+  
+      <div class="card" onclick="openPage('elementalsOverview')" style="background-image:url('https://i.imgur.com/Ufso9Go.jpeg');">
+        <div>Elementals</div>
+      </div>
+
+      <div class="card" onclick="openPage('lastSummer')" style="background-image:url('https://i.imgur.com/2TeuZLk.jpeg');">
+        <div>The Last Summer</div>
+      </div>
+
+      <!-- NEU: Rivals -->
+      <div class="card" onclick="openPage('rivals')" style="background-image:url('https://i.imgur.com/s6UsZOZ.jpeg');"> 
+        <div>Rivals</div>
+      </div>
+    
+    
+    <!-- NEU: Karate Rico -->
+      <div class="card" onclick="openPage('karaterico')" style="background-image:url('https://i.imgur.com/8JmGGYt.jpeg');"> 
+        <div>Karate Rico</div>
+      </div>
+    </div>
+
+    <!-- Elementals Serienübersicht -->
+    <div id="elementalsOverview" class="page hidden">
+      <h2>Elementals – Serienübersicht</h2>
+      <div onclick="openPage('staffel1')" class="card" style="background-image:url('https://i.imgur.com/Ufso9Go.jpeg');height:150px;">
+        <div>Staffel 1: Crystalized</div>
+      </div>
+      <button class="back-button" onclick="openPage('home')">Zurück zur Startseite</button>
+    </div>
+
+    <!-- Staffel 1 Übersicht -->
+    <div id="staffel1" class="page hidden">
+      <h3>Staffel 1: Crystalized</h3>
+      <div onclick="openPage('folge1')">
+        <img src="https://i.imgur.com/tfmArcx.png" alt="Folge 1">
+        <p>Folge 1: Willkommen in der Wüste</p>
+      </div>
+      <button class="back-button" onclick="openPage('elementalsOverview')">Zurück zur Serienübersicht</button>
+    </div>
+
+    <!-- Folge 1 Video-Seite -->
+    <div id="folge1" class="page hidden">
+      <h3>Elementals – Staffel 1, Folge 1: Willkommen in der Wüste</h3>
+      <iframe width="100%" height="400" src="https://www.youtube.com/embed/qtMYbmQqniA" frameborder="0" allowfullscreen></iframe>
+      <button class="back-button" onclick="openPage('staffel1')">Zurück zur Staffel</button>
+    </div>
+
+    <!-- The Last Summer Coming-Soon-Seite -->
+    <div id="lastSummer" class="page hidden">
+      <h2>🎬 The Last Summer – Bald verfügbar</h2>
+      <p>Unser neuer Film erscheint in Kürze exklusiv auf Ricos Originals+</p>
+      <button class="back-button" onclick="openPage('home')">Zurück zur Startseite</button>
+    </div>
+
+    <!-- Rivals Serienübersicht -->
+    <div id="rivals" class="page hidden">
+      <h2>Rivals Serienübersicht</h2>
+      <p>Rivals Die Neuauflage von Karate Rico</p>
+      <div onclick="openPage('staffel1-Rivals')" class="card" style="background-image:url('https://i.imgur.com/PVOfx5C.jpeg');height:150px;">
+        <div>Staffel 1: Rise of Thime</div>
+      </div> 
+      <button class="back-button" onclick="openPage('home')">Zurück zur Startseite</button>
+    </div>
+
+    <!-- Rivals Staffel 1 Übersicht -->
+    <div id="staffel1-Rivals" class="page hidden"> 
+      <h3>Staffel 1: Rise of Thime</h3>
+      <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+        <div onclick="openPage('folge1-Rivals')" style="cursor: pointer;">
+          <img src="https://i.imgur.com/jiQedJH.jpeg" alt="Folge 1">
+          <p>Folge 1: The First Strike</p> 
+        </div>
+        <div onclick="openPage('folge2-Rivals')" style="cursor: pointer;">
+          <img src="https://i.imgur.com/li38CyE.jpeg" alt="Folge 2">
+          <p>Folge 2: The Clock</p> 
+        </div>
+      </div>
+      <button class="back-button" onclick="openPage('rivals')">Zurück zur Serienübersicht</button>
+    </div>
+
+    <!-- Folge 1 Video-Seite Rivals -->
+    <div id="folge1-Rivals" class="page hidden">
+      <h3>Rivals – Staffel 1, Folge 1: The First Strike </h3>
+      <iframe width="100%" height="400" src="https://www.youtube.com/embed/zY_eArC8_Q8?si=Qc4ZxVU7ZsrFHjWf" frameborder="0" allowfullscreen></iframe>
+      <button class="back-button" onclick="openPage('staffel1-Rivals')">Zurück zur Staffel</button>
+    </div>
+
+    <!-- Folge 2 Video-Seite Rivals -->
+    <div id="folge2-Rivals" class="page hidden">
+      <h3>Rivals – Staffel 1, Folge 2: The Clock</h3>
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/0mmYdd8N2tw?si=0qEmnlxzeKHAs7_Z" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <button class="back-button" onclick="openPage('staffel1-Rivals')">Zurück zur Staffel</button>
+    </div>
+ 
+ 
+    <!-- Karate Rico Serienübersicht -->
+    <div id="karaterico" class="page hidden">
+      <h2>Karate Rico Serienübersicht</h2>
+      <p>Unsere erste Serie Jemals</p>
+      <div onclick="openPage('staffel1-karaterico')" class="card" style="background-image:url('https://i.imgur.com/8JmGGYt.jpeg">
+        <div>Staffel 1: Der weg </div>
+      </div> 
+      <button class="back-button" onclick="openPage('home')">Zurück zur Startseite</button>
+    </div>
+  
+ <!-- Karate Rico Staffel 1 Übersicht -->
+    <div id="staffel1-karaterico" class="page hidden"> 
+      <h3>Staffel 1: Der Weg </h3>
+      <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+        <div onclick="openPage('folge1-karaterico')" style="cursor: pointer;">
+          <img src="https://i.imgur.com/J9BfeAy.jpeg" alt="Folge 1">
+          <p>Folge 1: Der Weg beginnt</p> 
+        </div>
+        <div onclick="openPage('folge2-karaterico')" style="cursor: pointer;">
+          <img src="https://i.imgur.com/qb8TXYM.jpeg" alt="Folge 2">
+          <p>Folge 2: Der Verrat</p> 
+        </div>
+      </div>
+      <button class="back-button" onclick="openPage('karaterico')">Zurück zur Serienübersicht</button>
+    </div>
+
+ <!-- Folge 1 Video-Seite Rivals -->
+    <div id="folge1-karaterico" class="page hidden">
+      <h3>Rivals – Staffel 1, Folge 1: Der Weg beginnt </h3>
+      <iframe width="100%" height="400" src="https://www.youtube.com/embed/zY_eArC8_Q8?si=Qc4ZxVU7ZsrFHjWf" frameborder="0" allowfullscreen></iframe>
+      <button class="back-button" onclick="openPage('staffel1-Rivals')">Zurück zur Staffel</button>
+    </div>
+
+    <!-- Folge 2 Video-Seite Rivals -->
+    <div id="folge2-karaterico" class="page hidden">
+      <h3>Rivals – Staffel 1, Folge 2: Der Verrat</h3>
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/0mmYdd8N2tw?si=0qEmnlxzeKHAs7_Z" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <button class="back-button" onclick="openPage('staffel1-Rivals')">Zurück zur Staffel</button>
+    </div>
+
+ <!-- RCU Movie übersicht -->
+    <div id="RCU" class="page hidden">
+      <h2>RCU</h2>
+      <p>Ricos Cinematic Universe</p>
+      <div onclick="openPage('ASH:SOTF')" class="card" style="background-image:url('https://i.imgur.com/4ZAaVdA.png">
+        <div>ASH Silence Of The Flame</div>
+      </div> 
+     <div onclick="openPage('TNC:FS')" class="card" style="background-image:url('https://i.imgur.com/dQxnMlz.png')">
+  <div>The Nova Core First Steps</div>
+</div>
+      <button class="back-button" onclick="openPage('home')">Zurück zur Startseite</button>
+    </div>
+
+    <!-- ASH Silence of the flame Übersicht -->
+    <div id="ASH:SOTF" class="page hidden"> 
+      <h3>ASH Silence Of The Flame</h3>
+      <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+        <div onclick="openPage('ASH:SOTF:TEASER')" style="cursor: pointer;">
+          <img src="https://i.imgur.com/4ZAaVdA.png" alt="Folge 1">
+          <p>Teaser</p> 
+        </div>
+        <div onclick="openPage('ASH:SOTF:TRAILER')" style="cursor: pointer;">
+          <img src="https://i.imgur.com/4ZAaVdA.png" alt="Folge 2">
+          <p>Trailer</p> 
+        </div>
+      </div>
+      <button class="back-button" onclick="openPage('RCU')">Zurück zur RCU</button>
+    </div>
+
+    <!-- ASH Silence of the flame Teaser -->
+    <div id="ASH:SOTF:TEASER" class="page hidden">
+      <h3>Rivals – Staffel 1, Folge 1: The First Strike </h3>
+      <iframe width="100%" height="400" src="https://www.youtube.com/embed/O70jm5leO3E?si=t3LmgR6Ue3Lp2otr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <button class="back-button" onclick="openPage('ASH:SOTF')">Zurück zum Film</button>
+    </div>
+
+<!-- ASH Silence of the Flame Trailer -->
+<div id="ASH:SOTF:TRAILER" class="page hidden">
+  <h3>ASH – Silence of the Flame: Trailer</h3>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/dE--pw3ZmdM?si=YlLD8SSpQKJRMtgY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <button class="back-button" onclick="openPage('ASH:SOTF')">Zurück zum Film</button>
+</div>
+
+   }
+  <!-- The Nova core first Steps – Detailseite -->
+<div id="TNC:FS" class="page hidden"> 
+      <h3>The Nova Core First Steps</h3>
+      <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+        <div onclick="openPage('TNC:FS:TEASER')" style="cursor: pointer;">
+          <img src="https://i.imgur.com/dQxnMlz.png" alt="Folge 1">
+          <p>Teaser</p> 
+        </div>
+        <div onclick="openPage('TNC:FS:TRAILER')" style="cursor: pointer;">
+          <img src="https://i.imgur.com/dQxnMlz.png" alt="Folge 2">
+          <p>Trailer</p> 
+        </div>
+      </div>
+      <button class="back-button" onclick="openPage('RCU')">Zurück zur RCU</button>
+    </div>
+    
+    <!-- The Nova Core first Steps Teaser -->
+    <div id="TNC:FS:TEASER" class="page hidden">
+      <h3>Rivals – Staffel 1, Folge 1: The First Strike </h3>
+      <iframe width="100%" height="400" src="https://www.youtube.com" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <button class="back-button" onclick="openPage('TNC:FS')">Zurück zum Film</button>
+    </div>
+
+    <!-- The Nova core first steps Trailer -->
+    <div id="TNC:FS:TRAILER" class="page hidden">
+      <h3>Trailer</h3>
+      <iframe width="560" height="315" src="<iframe width="560" height="315" src="https://www.youtube.com/embed/dE--pw3ZmdM?si=jqli4m8R9YS-AROq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <button class="back-button" onclick="openPage('ASH:SOTF')">Zurück zum Film</button>
+    </div>
+
+
+<script>
+  // Prüfen, ob Update schon gesehen wurde
+  if (!localStorage.getItem('updateSeen')) {
+    document.getElementById('updateScreen').style.display = 'flex';
+
+    document.getElementById('startUpdate').addEventListener('click', () => {
+      // Button verstecken, Text zeigen
+      document.getElementById('startUpdate').style.display = 'none';
+      document.getElementById('loadingText').style.display = 'block';
+
+      let dots = document.getElementById('dots');
+      let dotCount = 1;
+      const dotInterval = setInterval(() => {
+        dotCount = (dotCount % 3) + 1;
+        dots.textContent = '.'.repeat(dotCount);
+      }, 500);
+
+      // Nach 5 Sekunden weiter
+      setTimeout(() => {
+        clearInterval(dotInterval);
+        document.getElementById('updateScreen').style.display = 'none';
+        localStorage.setItem('updateSeen', 'true'); // Merken
+        openPage('home');
+      }, 5000);
+    });
+  } else {
+    openPage('home');
+  }
+
+setTimeout(() => {
+  document.getElementById("startAnimation").style.display = "none";
+}, 4000); // Nach 4 Sekunden ausblenden
+
+document.querySelectorAll("button, .card, .navbar a").forEach(el => {
+  el.addEventListener("click", () => {
+    document.getElementById("clickSound").play();
+  });
+});
+
+function saveUsername() {
+  const name = document.getElementById("usernameInput").value.trim();
+  if (name) {
+    localStorage.setItem("ricosUserName", name);
+    showWelcome(name);
+    document.getElementById("accountOverlay").style.display = "none";
+  }
+}
+
+function showWelcome(name) {
+  document.getElementById("welcomeMessage").textContent = "Willkommen zurück, " + name + "!";
+}
+
+// Beim Laden prüfen, ob schon gespeichert
+window.addEventListener("load", () => {
+  const savedName = localStorage.getItem("ricosUserName");
+  if (savedName) {
+    document.getElementById("accountOverlay").style.display = "none";
+    showWelcome(savedName);
+  }
+});
+</script>
+</body>
+</html>
