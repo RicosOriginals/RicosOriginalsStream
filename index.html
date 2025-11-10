@@ -3,12 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ricos Originals Intro</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&family=Zen+Dots&display=swap" rel="stylesheet">
+  <title>Ricos Originals Animation</title>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&family=Rubik:wght@500&family=Zen+Dots&display=swap" rel="stylesheet">
+
+  <!-- GSAP (vollständig kostenlos, inkl. Timeline etc.) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
   <style>
     :root {
-      --background-color: rgb(10, 10, 10);
+      --background-color: rgb(10, 10, 10);  
       --ricos-color: rgb(27, 219, 124);
       --gradient-green-rgb: 32, 147, 127;
       --gradient-blue-rgb: 127, 117, 237;
@@ -22,9 +27,20 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
+      width: 100vw;
       background-color: var(--background-color);
       overflow: hidden;
     }
+
+    .absolute-centered {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .jakarta-sans-font { font-family: "Plus Jakarta Sans", sans-serif; }
+    .zen-dots-font { font-family: "Zen Dots", cursive; }
 
     #green-filter {
       position: absolute;
@@ -32,6 +48,38 @@
       width: 100%; height: 100%;
       background: radial-gradient(rgba(var(--gradient-green-rgb), 0.05), rgba(var(--gradient-green-rgb), 0.4) 80%);
       z-index: 1;
+    }
+
+    .gradient {
+      position: absolute;
+      width: 110%; height: 80px;
+      filter: blur(3em);
+      left: -5%;
+    }
+
+    #top-gradient {
+      top: -50px;
+      background: linear-gradient(
+        to right, 
+        rgba(var(--gradient-blue-rgb),0.75) 0% 10%, 
+        transparent 10% 20%,
+        rgba(var(--gradient-violet-rgb),0.5) 20% 50%,
+        rgba(var(--gradient-blue-rgb),0.5) 50% 70%,
+        rgba(var(--gradient-green-rgb),0.75) 70%
+      );
+    }
+
+    #bottom-gradient {
+      bottom: -50px;
+      background: linear-gradient(
+        to right,
+        rgba(var(--gradient-blue-rgb),0.75) 0% 10%,
+        transparent 10% 30%,
+        rgba(var(--gradient-blue-rgb),0.5) 30% 50%,
+        transparent 50% 70%,
+        rgba(var(--gradient-violet-rgb),0.5) 70% 80%,
+        transparent 80%
+      );
     }
 
     #logo-wrapper {
@@ -70,41 +118,33 @@
       transform: translate(-50%, -50%);
     }
 
-    #logo-text {
-      position: relative;
-      z-index: 3;
-      text-align: center;
-    }
+    #logo-text { position: relative; z-index: 3; text-align: center; }
 
-    #ricos-text {
-      color: var(--ricos-color);
-      font-family: 'Zen Dots', cursive;
-      font-size: 6em;
-    }
+    #ricos-text { color: var(--ricos-color); font-size: 6em; line-height: 1.2; }
+    #originals-text { color: white; font-size: 3em; letter-spacing: 0.12em; }
 
-    #originals-text {
-      color: white;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 3em;
-      letter-spacing: 0.12em;
-    }
+    @media(max-width:800px) { #logo-wrapper { transform: scale(0.7); } }
   </style>
 </head>
 <body>
 
 <div id="green-filter"></div>
+<div id="top-gradient" class="gradient"></div>
+<div id="bottom-gradient" class="gradient"></div>
+
 <div id="logo-wrapper">
   <div id="logo">
     <div id="logo-border"></div>
     <div id="logo-border-inner"></div>
     <div id="logo-text">
-      <div id="ricos-text">Ricos</div>
-      <div id="originals-text">ORIGINALS+</div>
+      <div id="ricos-text" class="zen-dots-font">Ricos</div>
+      <div id="originals-text" class="jakarta-sans-font">ORIGINALS</div>
     </div>
   </div>
 </div>
 
 <script>
+  // Buchstaben in <span> aufteilen
   function splitText(id){
     const el = document.getElementById(id);
     const text = el.textContent;
