@@ -1,181 +1,225 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ricos Originals Animation</title>
-  
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&family=Rubik:wght@500&family=Zen+Dots&display=swap" rel="stylesheet">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ricos Originals + — Start</title>
+<style>
+  /* --- Reset & Basis --- */
+  :root{
+    --bg-dark:#060606;
+    --green:#1ce783;
+    --muted:#a8a8a8;
+    --card:#0d0d0d;
+    --glass: rgba(255,255,255,0.03);
+    --accent: linear-gradient(90deg,#1ce783,#0fbf66);
+    --radius:12px;
+  }
+  *{box-sizing:border-box}
+  html,body{
+    height:100%;margin:0;
+    font-family:Inter,system-ui,Arial,sans-serif;
+    background:linear-gradient(180deg,#050505 0%, #0d0d0d 100%);
+    color:#fff;
+  }
+  a{color:inherit}
 
-  <!-- GSAP (vollständig kostenlos, inkl. Timeline etc.) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  /* --- Header --- */
+  header{
+    position:fixed;left:0;right:0;top:0;height:68px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 28px;
+    background:linear-gradient(180deg,rgba(0,0,0,0.55),rgba(0,0,0,0.2));
+    z-index:40;backdrop-filter: blur(6px);
+    border-bottom:1px solid rgba(255,255,255,0.03);
+  }
+  .brand{display:flex;gap:14px;align-items:center}
+  .logo{
+    width:160px;height:36px;display:flex;align-items:center;gap:10px;
+    font-weight:700;letter-spacing:1px;
+    color:var(--green); font-size:18px;
+    transform-origin:left center;
+  }
+  .logo .mark{
+    width:44px;height:36px;
+    background:var(--accent);border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow: 0 6px 20px rgba(28,231,131,0.2), inset 0 -6px 20px rgba(0,0,0,0.25);
+    font-weight:800;
+    color:#000;
+  }
+  .nav-actions{display:flex;gap:10px;align-items:center}
+  button.cta, button.login{
+    padding:10px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:600;
+    transition:all 0.2s ease;
+  }
+  button.cta{
+    background:var(--accent);
+    color:#000;
+    box-shadow: 0 8px 24px rgba(28,231,131,0.18);
+  }
+  button.cta:hover{
+    box-shadow: 0 8px 28px rgba(28,231,131,0.35);
+    transform:scale(1.03);
+  }
+  button.login{
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.08);
+    color:var(--muted);
+  }
 
-  <style>
-    :root {
-      --background-color: rgb(10, 10, 10);  
-      --ricos-color: rgb(27, 219, 124);
-      --gradient-green-rgb: 32, 147, 127;
-      --gradient-blue-rgb: 127, 117, 237;
-      --gradient-violet-rgb: 171, 111, 218;
-    }
+  /* --- Logo Intro Animation (plays on load) --- */
+  .logo-intro {
+    position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:80;
+    background:linear-gradient(180deg,rgba(3,3,3,0.95),rgba(0,0,0,0.9));
+  }
+  .intro-card{
+    display:flex;gap:18px;align-items:center;
+    padding:24px 36px;border-radius:18px;
+    background:linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    box-shadow: 0 20px 80px rgba(0,0,0,0.8);
+  }
+  .intro-mark{
+    width:78px;height:78px;border-radius:14px;
+    background:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    font-size:32px;font-weight:800;color:#000;
+  }
+  .intro-text{font-size:24px;letter-spacing:0.6px;color:#fff}
+  .hidden{display:none}
 
-    body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      width: 100vw;
-      background-color: var(--background-color);
-      overflow: hidden;
-    }
+  /* --- Hero --- */
+  main{padding-top:88px;padding-bottom:60px}
+  .hero{
+    min-height:56vh;padding:48px 36px;display:flex;align-items:flex-end;gap:28px;
+    background:linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.7) 100%), url('') center/cover no-repeat;
+    border-bottom: 1px solid rgba(255,255,255,0.02);
+  }
+  .hero .left{max-width:720px}
+  .eyebrow{
+    display:inline-block;padding:6px 10px;background:var(--glass);
+    border-radius:999px;font-size:12px;color:var(--muted);margin-bottom:12px
+  }
+  .hero h1{margin:0;font-size:44px;letter-spacing:0.4px;color:var(--green)}
+  .hero p{color:var(--muted);margin-top:10px}
+  .hero .controls{margin-top:18px;display:flex;gap:12px}
+  .poster-cta{
+    width:170px;height:94px;border-radius:10px;
+    background:linear-gradient(180deg,#0e0e0e,#0a0a0a);
+    display:flex;align-items:center;justify-content:center;font-weight:700;
+    color:var(--green);border:1px solid rgba(28,231,131,0.3);
+  }
 
-    .absolute-centered {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-    }
+  /* --- Grid --- */
+  .grid{
+    padding:28px 36px;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+    gap:18px;
+  }
+  .card{
+    height:260px;border-radius:12px;
+    background:linear-gradient(180deg,#111,#0a0a0a);
+    position:relative;overflow:hidden;
+    display:flex;align-items:flex-end;padding:12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    transition:transform 0.3s ease;
+  }
+  .card:hover{transform:scale(1.04)}
+  .card .title{font-weight:700}
+  .badge{
+    position:absolute;left:10px;top:10px;
+    padding:6px 8px;border-radius:999px;
+    background:var(--green);
+    color:#000;font-weight:700;font-size:12px;
+  }
 
-    .jakarta-sans-font { font-family: "Plus Jakarta Sans", sans-serif; }
-    .zen-dots-font { font-family: "Zen Dots", cursive; }
+  /* --- Footer --- */
+  footer{
+    padding:24px 36px;color:var(--muted);
+    font-size:13px;border-top:1px solid rgba(255,255,255,0.02);
+    margin-top:26px;text-align:center;
+  }
 
-    #green-filter {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: radial-gradient(rgba(var(--gradient-green-rgb), 0.05), rgba(var(--gradient-green-rgb), 0.4) 80%);
-      z-index: 1;
-    }
-
-    .gradient {
-      position: absolute;
-      width: 110%; height: 80px;
-      filter: blur(3em);
-      left: -5%;
-    }
-
-    #top-gradient {
-      top: -50px;
-      background: linear-gradient(
-        to right, 
-        rgba(var(--gradient-blue-rgb),0.75) 0% 10%, 
-        transparent 10% 20%,
-        rgba(var(--gradient-violet-rgb),0.5) 20% 50%,
-        rgba(var(--gradient-blue-rgb),0.5) 50% 70%,
-        rgba(var(--gradient-green-rgb),0.75) 70%
-      );
-    }
-
-    #bottom-gradient {
-      bottom: -50px;
-      background: linear-gradient(
-        to right,
-        rgba(var(--gradient-blue-rgb),0.75) 0% 10%,
-        transparent 10% 30%,
-        rgba(var(--gradient-blue-rgb),0.5) 30% 50%,
-        transparent 50% 70%,
-        rgba(var(--gradient-violet-rgb),0.5) 70% 80%,
-        transparent 80%
-      );
-    }
-
-    #logo-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100vw;
-      height: 100vh;
-      z-index: 2;
-    }
-
-    #logo { opacity: 0; position: relative; }
-
-    #logo-border {
-      background-color: var(--ricos-color);
-      border-radius: 2.25em;
-      height: 160%;
-      width: 140%;
-      z-index: 1;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    #logo-border-inner {
-      background-color: var(--background-color);
-      border-radius: 2em;
-      height: calc(160% - 0.5em);
-      width: calc(140% - 0.5em);
-      z-index: 2;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    #logo-text { position: relative; z-index: 3; text-align: center; }
-
-    #ricos-text { color: var(--ricos-color); font-size: 6em; line-height: 1.2; }
-    #originals-text { color: white; font-size: 3em; letter-spacing: 0.12em; }
-
-    @media(max-width:800px) { #logo-wrapper { transform: scale(0.7); } }
-  </style>
+  /* Responsiveness */
+  @media (max-width:880px){
+    .hero{padding:28px}
+    .hero h1{font-size:30px}
+    .grid{padding:18px}
+  }
+</style>
 </head>
 <body>
 
-<div id="green-filter"></div>
-<div id="top-gradient" class="gradient"></div>
-<div id="bottom-gradient" class="gradient"></div>
-
-<div id="logo-wrapper">
-  <div id="logo">
-    <div id="logo-border"></div>
-    <div id="logo-border-inner"></div>
-    <div id="logo-text">
-      <div id="ricos-text" class="zen-dots-font">Ricos</div>
-      <div id="originals-text" class="jakarta-sans-font">ORIGINALS</div>
-    </div>
+<!-- Logo Intro (plays once at start) -->
+<div class="logo-intro" id="intro">
+  <div class="intro-card">
+    <div class="intro-mark">R</div>
+    <div class="intro-text">Ricos Originals<span style="display:block;font-size:12px;color:var(--muted);margin-top:6px">Streaming • Originals • Local</span></div>
   </div>
 </div>
 
+<!-- Header -->
+<header>
+  <div class="brand">
+    <div class="logo" id="logo">
+      <div class="mark">R</div>
+      <div style="font-size:16px">Ricos Originals +</div>
+    </div>
+  </div>
+
+  <div class="nav-actions">
+    <div id="greet" style="color:var(--muted);font-size:14px"></div>
+    <button class="login" id="loginBtn">Login</button>
+    <button class="cta" id="ctaWatch">Jetzt ansehen</button>
+  </div>
+</header>
+
+<!-- Main -->
+<main>
+  <section class="hero" id="hero">
+    <div class="left">
+      <div class="eyebrow">NEUE SERIE</div>
+      <h1>Silent Ground</h1>
+      <p>Eine kleine, intensive Mystery-Serie. Minimaler Einsatz — maximale Spannung.</p>
+      <div class="controls">
+        <button class="cta" id="playBtn">Folge 1 ansehen</button>
+        <button class="login" id="moreBtn">Mehr</button>
+      </div>
+    </div>
+    <div style="margin-left:auto">
+      <div class="poster-cta">Trailer</div>
+    </div>
+  </section>
+
+  <section class="grid" id="grid">
+    <div class="card" data-ep="1">
+      <div class="badge">Folge 1</div>
+      <div class="title">Der Tag danach</div>
+    </div>
+    <div class="card" data-ep="2"><div class="title">Spuren im Nebel</div></div>
+    <div class="card" data-ep="3"><div class="title">Das Experiment</div></div>
+    <div class="card" data-ep="4"><div class="title">Der Spiegel</div></div>
+    <div class="card" data-ep="5"><div class="title">Die Wahrheit der Nacht</div></div>
+    <div class="card" data-ep="6"><div class="title">Kein Zurück</div></div>
+    <div class="card" data-ep="7"><div class="title">Der letzte Tag</div><div class="badge" style="bottom:10px;top:auto;">JETZT LIVE</div></div>
+  </section>
+
+</main>
+
+<footer>
+  &copy; <span id="year"></span> Ricos Originals. Demo-Seite — keine echten Inhalte.
+</footer>
+
 <script>
-  // Buchstaben in <span> aufteilen
-  function splitText(id){
-    const el = document.getElementById(id);
-    const text = el.textContent;
-    el.innerHTML = '';
-    return [...text].map(char=>{
-      const span = document.createElement('span');
-      span.textContent = char===' ' ? '\u00A0' : char;
-      span.style.display='inline-block';
-      el.appendChild(span);
-      return span;
-    });
-  }
-
-  const ricos = splitText('ricos-text');
-  const originals = splitText('originals-text');
-
-  const t1 = gsap.timeline({ defaults:{ ease:"power3.out" } });
-
-  t1.from("#green-filter", {duration:0.8, opacity:0, scale:3})
-    .to("#green-filter", {duration:0.25, opacity:0, scale:3})
-    .set("#logo", {opacity:1})
-    .from(ricos, {duration:0.3, opacity:0, y:50, stagger:0.05})
-    .from(originals, {duration:0.3, opacity:0, y:50, stagger:0.05})
-    .from("#logo-border", {duration:0.4, opacity:0, scale:0.5})
-    .from("#logo-border-inner", {duration:0.4, scale:0.5}, "-=0.4")
-    .to("#logo", {duration:1.5, scale:1.1})
-    .to(["#logo-border","#logo-border-inner"], {duration:1.5, scale:1.1}, "-=1.5")
-    .to("#logo-border", {duration:1.25, scale:8})
-    .to("#logo-border-inner", {duration:0.5, scale:8}, "-=0.5")
-    .to("#logo", {duration:0.25, opacity:0, scale:1.2, onComplete:()=>{window.location.href="main.html";}});
+const intro=document.getElementById('intro');
+const yearSpan=document.getElementById('year');
+yearSpan.textContent=new Date().getFullYear();
+const seen=localStorage.getItem('ricos_seen_intro');
+if(!seen){
+  setTimeout(()=>intro.style.transition='opacity .6s',20);
+  setTimeout(()=>intro.style.opacity=0,1000);
+  setTimeout(()=>{ intro.remove(); localStorage.setItem('ricos_seen_intro','1'); },1700);
+}else intro.remove();
 </script>
-
 </body>
 </html>
