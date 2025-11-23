@@ -1,225 +1,251 @@
+
 <!doctype html>
 <html lang="de">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Ricos Originals + — Start</title>
+<title>Wer schaut gerade? — Ricos Originals</title>
 <style>
-  /* --- Reset & Basis --- */
-  :root{
-    --bg-dark:#060606;
-    --green:#1ce783;
-    --muted:#a8a8a8;
-    --card:#0d0d0d;
-    --glass: rgba(255,255,255,0.03);
-    --accent: linear-gradient(90deg,#1ce783,#0fbf66);
-    --radius:12px;
-  }
-  *{box-sizing:border-box}
-  html,body{
-    height:100%;margin:0;
-    font-family:Inter,system-ui,Arial,sans-serif;
-    background:linear-gradient(180deg,#050505 0%, #0d0d0d 100%);
-    color:#fff;
-  }
-  a{color:inherit}
-
-  /* --- Header --- */
-  header{
-    position:fixed;left:0;right:0;top:0;height:68px;
-    display:flex;align-items:center;justify-content:space-between;
-    padding:12px 28px;
-    background:linear-gradient(180deg,rgba(0,0,0,0.55),rgba(0,0,0,0.2));
-    z-index:40;backdrop-filter: blur(6px);
-    border-bottom:1px solid rgba(255,255,255,0.03);
-  }
-  .brand{display:flex;gap:14px;align-items:center}
-  .logo{
-    width:160px;height:36px;display:flex;align-items:center;gap:10px;
-    font-weight:700;letter-spacing:1px;
-    color:var(--green); font-size:18px;
-    transform-origin:left center;
-  }
-  .logo .mark{
-    width:44px;height:36px;
-    background:var(--accent);border-radius:8px;
-    display:flex;align-items:center;justify-content:center;
-    box-shadow: 0 6px 20px rgba(28,231,131,0.2), inset 0 -6px 20px rgba(0,0,0,0.25);
-    font-weight:800;
-    color:#000;
-  }
-  .nav-actions{display:flex;gap:10px;align-items:center}
-  button.cta, button.login{
-    padding:10px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:600;
-    transition:all 0.2s ease;
-  }
-  button.cta{
-    background:var(--accent);
-    color:#000;
-    box-shadow: 0 8px 24px rgba(28,231,131,0.18);
-  }
-  button.cta:hover{
-    box-shadow: 0 8px 28px rgba(28,231,131,0.35);
-    transform:scale(1.03);
-  }
-  button.login{
-    background:transparent;
-    border:1px solid rgba(255,255,255,0.08);
-    color:var(--muted);
-  }
-
-  /* --- Logo Intro Animation (plays on load) --- */
-  .logo-intro {
-    position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:80;
-    background:linear-gradient(180deg,rgba(3,3,3,0.95),rgba(0,0,0,0.9));
-  }
-  .intro-card{
-    display:flex;gap:18px;align-items:center;
-    padding:24px 36px;border-radius:18px;
-    background:linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-    box-shadow: 0 20px 80px rgba(0,0,0,0.8);
-  }
-  .intro-mark{
-    width:78px;height:78px;border-radius:14px;
-    background:var(--accent);
-    display:flex;align-items:center;justify-content:center;
-    font-size:32px;font-weight:800;color:#000;
-  }
-  .intro-text{font-size:24px;letter-spacing:0.6px;color:#fff}
-  .hidden{display:none}
-
-  /* --- Hero --- */
-  main{padding-top:88px;padding-bottom:60px}
-  .hero{
-    min-height:56vh;padding:48px 36px;display:flex;align-items:flex-end;gap:28px;
-    background:linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.7) 100%), url('') center/cover no-repeat;
-    border-bottom: 1px solid rgba(255,255,255,0.02);
-  }
-  .hero .left{max-width:720px}
-  .eyebrow{
-    display:inline-block;padding:6px 10px;background:var(--glass);
-    border-radius:999px;font-size:12px;color:var(--muted);margin-bottom:12px
-  }
-  .hero h1{margin:0;font-size:44px;letter-spacing:0.4px;color:var(--green)}
-  .hero p{color:var(--muted);margin-top:10px}
-  .hero .controls{margin-top:18px;display:flex;gap:12px}
-  .poster-cta{
-    width:170px;height:94px;border-radius:10px;
-    background:linear-gradient(180deg,#0e0e0e,#0a0a0a);
-    display:flex;align-items:center;justify-content:center;font-weight:700;
-    color:var(--green);border:1px solid rgba(28,231,131,0.3);
-  }
-
-  /* --- Grid --- */
-  .grid{
-    padding:28px 36px;
-    display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
-    gap:18px;
-  }
-  .card{
-    height:260px;border-radius:12px;
-    background:linear-gradient(180deg,#111,#0a0a0a);
-    position:relative;overflow:hidden;
-    display:flex;align-items:flex-end;padding:12px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-    transition:transform 0.3s ease;
-  }
-  .card:hover{transform:scale(1.04)}
-  .card .title{font-weight:700}
-  .badge{
-    position:absolute;left:10px;top:10px;
-    padding:6px 8px;border-radius:999px;
-    background:var(--green);
-    color:#000;font-weight:700;font-size:12px;
-  }
-
-  /* --- Footer --- */
-  footer{
-    padding:24px 36px;color:var(--muted);
-    font-size:13px;border-top:1px solid rgba(255,255,255,0.02);
-    margin-top:26px;text-align:center;
-  }
-
-  /* Responsiveness */
-  @media (max-width:880px){
-    .hero{padding:28px}
-    .hero h1{font-size:30px}
-    .grid{padding:18px}
-  }
+:root{--bg:#0f0f0f;--muted:#b3b3b3;--accent:#e50914;}
+html,body{height:100%;margin:0;background:var(--bg);color:#fff;font-family:Inter,Arial,Helvetica,sans-serif}
+.page{max-width:1100px;margin:48px auto;padding:0 16px;text-align:center}
+h1{font-size:36px;margin:0 0 8px}
+.subtitle{color:var(--muted);margin-bottom:28px}
+.profiles{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+.profile{width:140px;cursor:pointer;user-select:none}
+.avatar{width:140px;height:140px;border-radius:8px;overflow:hidden;background:#222;display:block;border:2px solid transparent}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.pname{margin-top:10px;font-size:15px}
+.add-card{display:flex;align-items:center;justify-content:center;font-size:56px;border:2px dashed rgba(255,255,255,0.12);height:140px;border-radius:8px}
+.controls{margin-top:28px}
+.btn{display:inline-block;padding:10px 16px;border-radius:6px;background:var(--accent);color:#fff;border:none;font-weight:700;cursor:pointer}
+.btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);font-weight:600}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:9999}
+.modal{background:#111;padding:18px;border-radius:8px;width:360px;max-width:92%}
+.field{margin:8px 0;display:flex;flex-direction:column;align-items:flex-start}
+label{font-size:13px;color:var(--muted);margin-bottom:6px}
+input[type="text"], input[type="url"]{width:100%;padding:8px;border-radius:6px;border:1px solid #222;background:#0b0b0b;color:#fff}
+.avatar-choices{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.choice{width:64px;height:64px;border-radius:6px;overflow:hidden;cursor:pointer;border:2px solid transparent}
+.choice img{width:100%;height:100%;object-fit:cover;display:block}
+.choice.selected{outline:3px solid #fff;transform:translateY(-4px)}
+.small{color:var(--muted);font-size:13px;margin-top:8px}
+.footer{margin-top:36px;color:var(--muted);font-size:13px}
+@media (max-width:520px){.profile{width:110px}.avatar{width:110px;height:110px}.add-card{height:110px;font-size:40px}}
 </style>
 </head>
 <body>
+<div class="page" role="main">
+  <h1>Wer schaut gerade?</h1>
+  <p class="subtitle">Wähle dein Profil oder erstelle ein neues (max. 5).</p>
 
-<!-- Logo Intro (plays once at start) -->
-<div class="logo-intro" id="intro">
-  <div class="intro-card">
-    <div class="intro-mark">R</div>
-    <div class="intro-text">Ricos Originals<span style="display:block;font-size:12px;color:var(--muted);margin-top:6px">Streaming • Originals • Local</span></div>
+  <div id="profiles" class="profiles" aria-live="polite"></div>
+
+  <div class="controls">
+    <button id="openCreate" class="btn">Profil hinzufügen / bearbeiten</button>
+    <button id="resetAll" class="btn secondary">Alle Profile entfernen</button>
+  </div>
+
+  <div class="footer">Lokale Demo — Profile werden im Browser gespeichert.</div>
+</div>
+
+<!-- Modal -->
+<div id="modal" class="modal-backdrop" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h2 id="modalTitle">Profil bearbeiten / erstellen</h2>
+
+    <div class="field">
+      <label for="pname">Name</label>
+      <input id="pname" type="text" maxlength="24" placeholder="Name eingeben (z. B. Du)">
+    </div>
+
+    <div class="field">
+      <label>Avatar wählen (oder unten Imgur-Link einfügen)</label>
+      <div id="avatarChoices" class="avatar-choices" aria-label="Avatar Auswahl"></div>
+    </div>
+
+    <div class="field">
+      <label for="avatarUrl">Eigene Bild-URL (Imgur etc.)</label>
+      <input id="avatarUrl" type="url" placeholder="https://i.imgur.com/...">
+    </div>
+
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
+      <button id="cancel" class="btn secondary">Abbrechen</button>
+      <button id="save" class="btn">Speichern</button>
+    </div>
+
+    <p class="small">Maximal 5 Profile. Profile werden lokal gespeichert und sind nur in diesem Browser verfügbar.</p>
   </div>
 </div>
 
-<!-- Header -->
-<header>
-  <div class="brand">
-    <div class="logo" id="logo">
-      <div class="mark">R</div>
-      <div style="font-size:16px">Ricos Originals +</div>
-    </div>
-  </div>
-
-  <div class="nav-actions">
-    <div id="greet" style="color:var(--muted);font-size:14px"></div>
-    <button class="login" id="loginBtn">Login</button>
-    <button class="cta" id="ctaWatch">Jetzt ansehen</button>
-  </div>
-</header>
-
-<!-- Main -->
-<main>
-  <section class="hero" id="hero">
-    <div class="left">
-      <div class="eyebrow">NEUE SERIE</div>
-      <h1>Silent Ground</h1>
-      <p>Eine kleine, intensive Mystery-Serie. Minimaler Einsatz — maximale Spannung.</p>
-      <div class="controls">
-        <button class="cta" id="playBtn">Folge 1 ansehen</button>
-        <button class="login" id="moreBtn">Mehr</button>
-      </div>
-    </div>
-    <div style="margin-left:auto">
-      <div class="poster-cta">Trailer</div>
-    </div>
-  </section>
-
-  <section class="grid" id="grid">
-    <div class="card" data-ep="1">
-      <div class="badge">Folge 1</div>
-      <div class="title">Der Tag danach</div>
-    </div>
-    <div class="card" data-ep="2"><div class="title">Spuren im Nebel</div></div>
-    <div class="card" data-ep="3"><div class="title">Das Experiment</div></div>
-    <div class="card" data-ep="4"><div class="title">Der Spiegel</div></div>
-    <div class="card" data-ep="5"><div class="title">Die Wahrheit der Nacht</div></div>
-    <div class="card" data-ep="6"><div class="title">Kein Zurück</div></div>
-    <div class="card" data-ep="7"><div class="title">Der letzte Tag</div><div class="badge" style="bottom:10px;top:auto;">JETZT LIVE</div></div>
-  </section>
-
-</main>
-
-<footer>
-  &copy; <span id="year"></span> Ricos Originals. Demo-Seite — keine echten Inhalte.
-</footer>
-
 <script>
-const intro=document.getElementById('intro');
-const yearSpan=document.getElementById('year');
-yearSpan.textContent=new Date().getFullYear();
-const seen=localStorage.getItem('ricos_seen_intro');
-if(!seen){
-  setTimeout(()=>intro.style.transition='opacity .6s',20);
-  setTimeout(()=>intro.style.opacity=0,1000);
-  setTimeout(()=>{ intro.remove(); localStorage.setItem('ricos_seen_intro','1'); },1700);
-}else intro.remove();
+// Placeholder avatars (you will replace with your Imgur links later)
+const PLACEHOLDER_AVATARS = [
+  "https://i.imgur.com/8b1dQxL.jpeg",
+  "https://i.imgur.com/3QZ4E1N.jpeg",
+  "https://i.imgur.com/u5JtY0p.jpeg",
+  "https://i.imgur.com/VKzQyYS.jpeg",
+  "https://i.imgur.com/5rF7bE2.jpeg"
+];
+
+const MAX_PROFILES = 5;
+const STORAGE_KEY = "ricos_profiles_v2";
+
+const profilesEl = document.getElementById("profiles");
+const openCreate = document.getElementById("openCreate");
+const resetAll = document.getElementById("resetAll");
+const modal = document.getElementById("modal");
+const avatarChoices = document.getElementById("avatarChoices");
+const pname = document.getElementById("pname");
+const avatarUrl = document.getElementById("avatarUrl");
+const cancel = document.getElementById("cancel");
+const saveBtn = document.getElementById("save");
+
+let profiles = [];
+let editIndex = -1;
+let selectedAvatar = PLACEHOLDER_AVATARS[0];
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    profiles = raw ? JSON.parse(raw) : null;
+  } catch(e){ profiles = null; }
+  if(!profiles || !Array.isArray(profiles) || profiles.length === 0){
+    // create initial single profile "Du"
+    profiles = [{ name: "Du", avatar: PLACEHOLDER_AVATARS[0] }];
+    save();
+  }
+}
+function save(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(profiles));
+}
+
+function render(){
+  profilesEl.innerHTML = "";
+  profiles.forEach((p, idx) => {
+    const div = document.createElement("div");
+    div.className = "profile";
+    div.innerHTML = `<div class="avatar" data-idx="${idx}"><img src="${p.avatar}" alt="${p.name}"></div><div class="pname">${escapeHtml(p.name)}</div>`;
+    div.addEventListener("click", ()=> {
+      // select profile -> go to player (streaming.html expected)
+      localStorage.setItem("ricos_selected_profile", idx);
+      window.location.href = "streaming.html";
+    });
+    // right-click to edit
+    div.addEventListener("contextmenu", (e)=>{ e.preventDefault(); openModal(idx); });
+    profilesEl.appendChild(div);
+  });
+
+  if(profiles.length < MAX_PROFILES){
+    const add = document.createElement("div");
+    add.className = "profile";
+    add.innerHTML = `<div class="add-card">+</div><div class="pname">Profil hinzufügen</div>`;
+    add.addEventListener("click", ()=> openModal(profiles.length));
+    profilesEl.appendChild(add);
+  }
+}
+
+function openModal(index){
+  editIndex = (typeof index === "number") ? index : -1;
+  selectedAvatar = PLACEHOLDER_AVATARS[0];
+  // populate avatar choices
+  avatarChoices.innerHTML = "";
+  PLACEHOLDER_AVATARS.forEach((u)=> {
+    const c = document.createElement("div");
+    c.className = "choice";
+    c.innerHTML = `<img src="${u}" alt="avatar">`;
+    c.addEventListener("click", ()=> {
+      selectedAvatar = u;
+      document.querySelectorAll(".choice").forEach(x=>x.classList.remove("selected"));
+      c.classList.add("selected");
+      avatarUrl.value = "";
+    });
+    avatarChoices.appendChild(c);
+  });
+
+  if(index >=0 && index < profiles.length){
+    // editing existing
+    pname.value = profiles[index].name;
+    selectedAvatar = profiles[index].avatar || PLACEHOLDER_AVATARS[0];
+    // mark selected
+    Array.from(avatarChoices.children).forEach(ch=>{
+      if(ch.querySelector("img").src === selectedAvatar) ch.classList.add("selected");
+    });
+  } else {
+    // new profile
+    pname.value = "";
+    avatarUrl.value = "";
+  }
+
+  modal.style.display = "flex";
+  modal.setAttribute("aria-hidden","false");
+  setTimeout(()=> pname.focus(),50);
+}
+
+function closeModal(){
+  modal.style.display = "none";
+  modal.setAttribute("aria-hidden","true");
+  editIndex = -1;
+}
+
+cancel.addEventListener("click", closeModal);
+
+saveBtn.addEventListener("click", ()=>{
+  const name = pname.value.trim() || "Gast";
+  const url = avatarUrl.value.trim();
+  const avatar = url || selectedAvatar || PLACEHOLDER_AVATARS[0];
+
+  if(editIndex >=0 && editIndex < profiles.length){
+    // update
+    profiles[editIndex].name = name;
+    profiles[editIndex].avatar = avatar;
+  } else {
+    // create new if room
+    if(profiles.length >= MAX_PROFILES){
+      alert("Maximal 5 Profile erlaubt.");
+      return;
+    }
+    profiles.push({ name, avatar });
+  }
+  save();
+  render();
+  closeModal();
+});
+
+resetAll.addEventListener("click", ()=>{
+  if(confirm("Alle Profile löschen? (Die Seite legt danach wieder ein Standard-Profil 'Du' an)")){
+    localStorage.removeItem(STORAGE_KEY);
+    load();
+    render();
+  }
+});
+
+openCreate.addEventListener("click", ()=> openModal(profiles.length < MAX_PROFILES ? profiles.length : 0));
+
+// allow editing by long-press or keyboard - also add delete via double-click
+profilesEl.addEventListener("dblclick", (e)=> {
+  // find nearest profile
+  const p = e.target.closest(".profile");
+  if(!p) return;
+  const idx = Array.from(profilesEl.children).indexOf(p);
+  if(idx >=0 && idx < profiles.length){
+    if(confirm("Profil löschen?")) {
+      profiles.splice(idx,1);
+      save();
+      render();
+    }
+  }
+});
+
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m])); }
+
+// init
+load();
+render();
+
+// close modal on backdrop click
+modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
+
 </script>
 </body>
 </html>
