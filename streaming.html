@@ -1,0 +1,115 @@
+
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Streaming – The Other Side</title>
+<style>
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0f0f0f;color:white;}
+header{display:flex;align-items:center;padding:20px;gap:30px;background:rgba(0,0,0,0.55);position:absolute;top:0;width:100%;z-index:10;}
+nav a{color:white;margin-right:20px;text-decoration:none;font-weight:bold;}
+.hero{position:relative;height:70vh;background:url('https://i.imgur.com/zMLjKZZ.jpeg') center/cover no-repeat;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.9),rgba(0,0,0,0.2));}
+.hero-content{position:absolute;bottom:20%;left:50px;max-width:500px;}
+.hero-content h1{font-size:48px;margin:0;}
+.hero-content p{margin-top:10px;font-size:16px;line-height:1.4;color:#ccc;}
+.btns{margin-top:20px;}
+.btn{padding:12px 20px;border-radius:4px;border:none;font-size:16px;margin-right:10px;cursor:pointer;}
+.play{background:white;color:black;}
+.list{background:rgba(255,255,255,0.2);color:white;}
+.row{padding:20px;}
+.row h2{margin:0 0 10px 0;}
+.posters{display:flex;gap:10px;overflow-x:auto;}
+.posters img{width:160px;height:90px;object-fit:cover;border-radius:4px;}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="https://i.imgur.com/IRgyzQK.png" height="140">
+  <nav>
+    <a href="#" id="homeBtn">Startseite</a>
+    <a href="#" id="listBtn">Meine Liste</a>
+  </nav>
+</header>
+
+<div id="homeSection">
+<div class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1>The Other Side</h1>
+    <p>„The Other Side“ – Ein Körper, zwei Seelen. Als ein mysteriöser Nebel über die Stadt zieht,
+    verschwinden Menschen spurlos. Zurück bleiben nur rätselhafte Spuren – und eine dunkle, verzerrte Version
+    unserer Realität. Eine Gruppe Jugendlicher entdeckt, dass die Grenze zwischen Licht und Schatten
+    krasser ist, als jeder glaubt.</p>
+    <div class="btns">
+      <button id="playBtn" class="btn play">► Abspielen</button>
+      <button id="addListBtn" class="btn list">+ Merkliste</button>
+    </div>
+  </div>
+</div>
+</div>
+<div class="row">
+  <h2>Deine Vorschläge</h2>
+  <div class="posters">
+    <img src="https://i.imgur.com/TS5RavN.png">
+    <img src="https://i.imgur.com/3QZ4E1N.jpeg">
+    <img src="https://i.imgur.com/u5JtY0p.jpeg">
+    <img src="https://i.imgur.com/VKzQyYS.jpeg">
+    <img src="https://i.imgur.com/5rF7bE2.jpeg">
+  </div>
+</div>
+
+
+<div id="listSection" style="display:none;padding:20px;">
+  <h2>Meine Liste</h2>
+  <p>Noch keine Inhalte gespeichert.</p>
+</div>
+
+<script>
+document.getElementById("homeBtn").onclick = () => {
+  document.getElementById("homeSection").style.display = "block";
+  document.getElementById("listSection").style.display = "none";
+};
+
+document.getElementById("listBtn").onclick = () => {
+  document.getElementById("homeSection").style.display = "none";
+  document.getElementById("listSection").style.display = "block";
+};
+</script>
+
+
+<script>
+let myList = JSON.parse(localStorage.getItem("myList")||"[]");
+
+document.getElementById("addListBtn").onclick = ()=>{
+  const item = {title:"The Other Side", img:"https://i.imgur.com/zMLjKZZ.jpeg"};
+  if(!myList.find(x=>x.title===item.title)){
+    myList.push(item);
+    localStorage.setItem("myList", JSON.stringify(myList));
+    renderList();
+  }
+};
+
+document.getElementById("playBtn").onclick = ()=>{
+  window.location.href="Theotherside.html";
+};
+
+function renderList(){
+  let box=document.getElementById("listSection");
+  let html="<h2>Meine Liste</h2>";
+  if(myList.length===0){html+="<p>Noch keine Inhalte gespeichert.</p>";}
+  else{
+    html+="<div style='display:flex;gap:10px;flex-wrap:wrap;'>";
+    myList.forEach(i=>{
+      html+=`<div><img src="${i.img}" style="width:160px;height:90px;border-radius:4px;"><div>${i.title}</div></div>`;
+    });
+    html+="</div>";
+  }
+  box.innerHTML=html;
+}
+
+renderList();
+</script>
+</body>
+</html>
